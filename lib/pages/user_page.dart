@@ -42,6 +42,7 @@ class _UserPageState extends State<UserPage> {
           );
 
           await userMockapiService.createUser(_usuarioNuevo);
+
           await getUsers();
         },
       ),
@@ -62,6 +63,25 @@ class _UserPageState extends State<UserPage> {
                       fit: BoxFit.cover,
                       width: 50,
                       height: 50,
+                    ),
+                    trailing: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        IconButton(
+                          onPressed: () async {
+                            UserModel updateUser = UserModel(
+                              createdAt: DateTime.now(),
+                              name: "Juana Cervantes",
+                              avatar:
+                                  "https://images.pexels.com/photos/36512355/pexels-photo-36512355.jpeg",
+                              id: userList[index].toString(),
+                            );
+                            await userMockapiService.updateUser(updateUser);
+                            await getUsers();
+                          },
+                          icon: Icon(Icons.edit),
+                        ),
+                      ],
                     ),
                   ),
                 );
