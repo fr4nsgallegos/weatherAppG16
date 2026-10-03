@@ -1,0 +1,59 @@
+import 'package:flutter/material.dart';
+import 'package:weatherappg16/models/user_model.dart';
+import 'package:weatherappg16/services/user_mockapi_service.dart';
+
+class UserPage extends StatefulWidget {
+  UserPage({super.key});
+
+  @override
+  State<UserPage> createState() => _UserPageState();
+}
+
+class _UserPageState extends State<UserPage> {
+  List<UserModel> userList = [];
+
+  UserMockapiService userMockapiService = UserMockapiService();
+  bool _isLoading = false;
+
+  Future<void> getUsers() async {
+    _isLoading = true;
+    setState(() {});
+    userList = await userMockapiService.getUsers();
+    _isLoading = false;
+    setState(() {});
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    getUsers();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: Text("Usuarios")),
+      body: _isLoading
+          ? Center(child: CircularProgressIndicator())
+          : userList.isEmpty
+          ? Center(child: Text("NO hay ningun usuario registrado"))
+          : ListView.builder(
+              itemCount: userList.length,
+              itemBuilder: (BuildContext context, int index) {
+                return Card(
+                  child: ListTile(
+                    title: Text(userList[index].name),
+                    subtitle: Text(userList[index].createdAt.toString()),
+                    leading: Image.network(
+                      userList[index].avatar,
+                      fit: BoxFit.cover,
+                      width: 50,
+                      height: 50,
+                    ),
+                  ),
+                );
+              },
+            ),
+    );
+  }
+}

@@ -21,7 +21,7 @@ class UserMockapiService {
     if (response.statusCode == 200) {
       List data = jsonDecode(response.body);
       print(data);
-      print(data[0]); //esto si devuelve un mapa
+      // print(data[0]); //esto si devuelve un mapa
       return data.map((user) => UserModel.fromJson(user)).toList();
     } else {
       throw Exception("Error al cargar los usuarios");
