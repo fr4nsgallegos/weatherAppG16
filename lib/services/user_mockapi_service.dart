@@ -27,4 +27,22 @@ class UserMockapiService {
       throw Exception("Error al cargar los usuarios");
     }
   }
+
+  // POST
+  Future<UserModel> createUser(UserModel user) async {
+    final reponse = await http.post(
+      Uri.parse("$baseUrl/users/"),
+      body: jsonEncode(user.toJson()),
+      headers: {"Content-Type": "application/json"},
+    );
+
+    if (reponse.statusCode == 201) {
+      print(reponse.body);
+      return UserModel.fromJson(jsonDecode(reponse.body));
+    } else {
+      throw Exception(
+        "Errore ${reponse.statusCode}  - ${reponse.body.toString()}",
+      );
+    }
+  }
 }

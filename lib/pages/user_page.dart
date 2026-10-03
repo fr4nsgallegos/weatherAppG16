@@ -32,6 +32,19 @@ class _UserPageState extends State<UserPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      floatingActionButton: FloatingActionButton(
+        onPressed: () async {
+          UserModel _usuarioNuevo = UserModel(
+            createdAt: DateTime.now(),
+            name: "Jhonny Gallegos",
+            avatar:
+                "https://images.pexels.com/photos/8128187/pexels-photo-8128187.jpeg",
+          );
+
+          await userMockapiService.createUser(_usuarioNuevo);
+          await getUsers();
+        },
+      ),
       appBar: AppBar(title: Text("Usuarios")),
       body: _isLoading
           ? Center(child: CircularProgressIndicator())
