@@ -74,12 +74,21 @@ class _UserPageState extends State<UserPage> {
                               name: "Juana Cervantes",
                               avatar:
                                   "https://images.pexels.com/photos/36512355/pexels-photo-36512355.jpeg",
-                              id: userList[index].toString(),
+                              id: userList[index].id,
                             );
                             await userMockapiService.updateUser(updateUser);
                             await getUsers();
                           },
                           icon: Icon(Icons.edit),
+                        ),
+                        IconButton(
+                          onPressed: () async {
+                            await userMockapiService.deleteUser(
+                              userList[index].id.toString(),
+                            );
+                            await getUsers();
+                          },
+                          icon: Icon(Icons.delete),
                         ),
                       ],
                     ),

@@ -53,8 +53,6 @@ class UserMockapiService {
       headers: {"Content-Type": "application/json"},
       body: jsonEncode(user.toJson()),
     );
-    print(response.statusCode);
-    print(response.body);
     try {
       if (response.statusCode == 200) {
         return UserModel.fromJson(jsonDecode(response.body));
@@ -63,6 +61,14 @@ class UserMockapiService {
       }
     } catch (e) {
       print("error: $e");
+    }
+  }
+
+  // DELETE
+  Future<void> deleteUser(String id) async {
+    final response = await http.delete(Uri.parse("$baseUrl/users/$id"));
+    if (response.statusCode != 200) {
+      throw Exception(response);
     }
   }
 }
