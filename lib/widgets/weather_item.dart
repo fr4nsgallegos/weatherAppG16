@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 
 class WeatherItem extends StatelessWidget {
-  const WeatherItem({super.key});
+  String asset;
+  WeatherItem({super.key, required this.asset});
 
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Image.asset("assets/icons/nube.png", height: 50),
+        Image.asset("assets/icons/$asset.png", height: 50),
         Text("18 km/h", style: TextStyle(color: Colors.white, fontSize: 18)),
       ],
     );

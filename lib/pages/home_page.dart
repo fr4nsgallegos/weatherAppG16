@@ -8,6 +8,13 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: Text("Weather app"),
+        centerTitle: true,
+        foregroundColor: Colors.white,
+        backgroundColor: Color(0xff2C2F31),
+      ),
+      backgroundColor: Color(0xff2C2F31),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           UserMockapiService userMockapiService = UserMockapiService();
@@ -26,10 +33,9 @@ class HomePage extends StatelessWidget {
               margin: EdgeInsets.symmetric(vertical: 24, horizontal: 20),
               padding: EdgeInsets.symmetric(vertical: 32, horizontal: 24),
               decoration: BoxDecoration(
-                color: Colors.red,
                 borderRadius: BorderRadius.circular(25),
                 gradient: LinearGradient(
-                  colors: [Colors.red, Colors.orange],
+                  colors: [Color(0xff2E5FEC), Color(0xff6796F7)],
                   begin: Alignment.topLeft,
                   end: Alignment.bottomRight,
                   stops: [0.2, 0.8],
@@ -42,11 +48,19 @@ class HomePage extends StatelessWidget {
                     "Lima, Perú",
                     style: TextStyle(color: Colors.white, fontSize: 18),
                   ),
-                  Image.asset("assets/icons/nube.png", height: 100),
+                  Image.asset("assets/icons/heavycloudy.png", height: 100),
+                  Text(
+                    "23.9 °",
+                    style: TextStyle(fontSize: 100, color: Colors.white),
+                  ),
                   Divider(height: 48),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [WeatherItem(), WeatherItem(), WeatherItem()],
+                    children: [
+                      WeatherItem(asset: "windspeed"),
+                      WeatherItem(asset: "humidity"),
+                      WeatherItem(asset: "cloud"),
+                    ],
                   ),
                 ],
               ),
