@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:weatherappg16/services/user_mockapi_service.dart';
 import 'package:weatherappg16/widgets/weather_item.dart';
 
 class HomePage extends StatelessWidget {
@@ -7,6 +8,16 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          UserMockapiService userMockapiService = UserMockapiService();
+          userMockapiService.getUsers().then((valores) {
+            print("*********************************");
+            print(valores);
+            print("*********************************");
+          });
+        },
+      ),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
