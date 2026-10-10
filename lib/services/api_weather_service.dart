@@ -1,7 +1,12 @@
+import 'dart:convert';
+
 import 'package:http/http.dart' as http;
+import 'package:logger/logger.dart';
+import 'package:weatherappg16/models/weather_model.dart';
 
 class ApiWeatherService {
   String urlBase = "http://api.weatherapi.com/v1/";
+  Logger logger = Logger();
 
   Future<void> getWeatherInfo() async {
     final url = Uri.parse(
@@ -21,7 +26,7 @@ class ApiWeatherService {
     }
   }
 
-  Future<void> getWeatherInfoByName(String ciudad) async {
+  Future<WeatherModel?> getWeatherInfoByName(String ciudad) async {
     final url = Uri.parse(
       "$urlBase/current.json?key=70866d7ade244a3c9ca20142230509&q=$ciudad&aqi=no",
     );
@@ -29,10 +34,11 @@ class ApiWeatherService {
     try {
       final response = await http.get(url);
       if (response.statusCode == 200) {
-        print("""Weather api response
-        response: $response
-        statuscode: ${response.statusCode}
-        body: ${response.body}""");
+        final data = json.decode(response.body);
+        logger.f(data);
+        WeatherModel weatherModel = WeatherModel.fromJson(data);
+        logger.w(weatherModel.location.name);
+        return weatherModel;
       }
     } catch (e) {
       throw Exception("Error inesperado: $e");

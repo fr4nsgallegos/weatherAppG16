@@ -3,6 +3,7 @@
 //     final weatherModel = weatherModelFromJson(jsonString);
 
 import 'dart:convert';
+import 'dart:ffi';
 
 WeatherModel weatherModelFromJson(String str) =>
     WeatherModel.fromJson(json.decode(str));
@@ -29,38 +30,38 @@ class WeatherModel {
 class Current {
   final int lastUpdatedEpoch;
   final String lastUpdated;
-  final int tempC;
+  final double tempC;
   final double tempF;
   final int isDay;
   final Condition condition;
   final double windMph;
-  final int windKph;
+  final double windKph;
   final int windDegree;
   final String windDir;
-  final int pressureMb;
+  final double pressureMb;
   final double pressureIn;
-  final int precipMm;
-  final int precipIn;
+  final double precipMm;
+  final double precipIn;
   final int humidity;
   final int cloud;
   final double feelslikeC;
   final double feelslikeF;
-  final int windchillC;
-  final int windchillF;
-  final int heatindexC;
+  final double windchillC;
+  final double windchillF;
+  final double heatindexC;
   final double heatindexF;
   final double dewpointC;
   final double dewpointF;
-  final int visKm;
-  final int visMiles;
-  final int uv;
+  final double visKm;
+  final double visMiles;
+  final double uv;
   final double gustMph;
   final double gustKph;
   final int willItRain;
   final int chanceOfRain;
   final int willItSnow;
   final int chanceOfSnow;
-  final int wetbulbC;
+  final double wetbulbC;
   final double wetbulbF;
 
   Current({
