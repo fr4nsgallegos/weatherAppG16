@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
+import 'package:logger/web.dart';
 import 'package:weatherappg16/models/weather_model.dart';
 import 'package:weatherappg16/services/api_weather_service.dart';
 import 'package:weatherappg16/services/user_mockapi_service.dart';
@@ -17,6 +19,7 @@ class _HomePageState extends State<HomePage> {
 
   WeatherModel? weatherModel;
   ApiWeatherService apiWeatherService = ApiWeatherService();
+  Logger logger = Logger();
 
   Future<void> getWeather() async {
     weatherModel = await apiWeatherService.getWeatherInfoByName(
@@ -25,10 +28,72 @@ class _HomePageState extends State<HomePage> {
     setState(() {});
   }
 
+  Future<void> getWeatherByPosition() async {
+    Position? _pos = await getPosition();
+    if (_pos == null) {
+      print("No se pudo obtener la posición");
+      return null;
+    }
+
+    weatherModel = await apiWeatherService.getWeatherInfoByPosition(_pos);
+    setState(() {});
+  }
+
+  Future<Position?> getPosition() async {
+    bool serviceEnabled;
+    LocationPermission locationPermission;
+
+    // verificamos si el servicio esta habilitado
+    serviceEnabled = await Geolocator.isLocationServiceEnabled();
+
+    if (!serviceEnabled) {
+      print("Los servicios estan inhabilitados");
+      return null;
+    }
+
+    // Verificar los permisos
+    locationPermission = await Geolocator.checkPermission();
+    if (locationPermission == LocationPermission.denied) {
+      locationPermission = await Geolocator.requestPermission();
+      if (locationPermission == LocationPermission.denied) {
+        print("Permiso de ubicación denegado");
+        return null;
+      }
+    }
+
+    if (locationPermission == LocationPermission.deniedForever) {
+      print("Los permisos de ubicación estan permanetemente denegados");
+      return null;
+    }
+
+    try {
+      Position position = await Geolocator.getCurrentPosition();
+      logger.d(position);
+      return position;
+    } catch (e) {
+      print("Error al obtener la ubicación: $e");
+      return null;
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    getWeatherByPosition();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        actions: [
+          IconButton(
+            onPressed: () {
+              getWeatherByPosition();
+            },
+            icon: Icon(Icons.location_on_outlined),
+          ),
+        ],
         title: Text("Weather app"),
         centerTitle: true,
         foregroundColor: Colors.white,
@@ -78,8 +143,10 @@ class _HomePageState extends State<HomePage> {
                       children: [
                         Text(
                           "${weatherModel!.location.name}, ${weatherModel!.location.country}",
+                          textAlign: TextAlign.center,
                           style: TextStyle(color: Colors.white, fontSize: 18),
                         ),
+                        SizedBox(height: 16),
                         Image.asset(
                           "assets/icons/heavycloudy.png",
                           height: 100,
